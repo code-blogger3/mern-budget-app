@@ -1,16 +1,17 @@
-// import booksRoute from "./routes/booksRoute.js";
 // import { PORT, mongoDBURL } from "./config.js";
 import express from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
 import cors from "cors";
 import { userRouter } from "./routes/user.js";
+import { budgetRouter } from "./routes/budget.js";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 app.use("/auth", userRouter);
+app.use("/budget", budgetRouter);
 // PORT = 8001;
 mongoose
   .connect(process.env.mongoDBURL)
