@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import { UserModel } from "../models/Users.js";
+import { UserModel } from "../models/User.js";
 import { verifyToken } from "./user.js";
 import { BudgetModel } from "../models/Budget.js";
 
@@ -17,17 +17,19 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", verifyToken, async (req, res) => {
-  const user = await UserModel.findById(req.body.userId);
-  const recipe = new RecipesModel({
+router.post("/", async (req, res) => {
+  const user = await UserModel.findById(req.body.userID);
+  const budget = new BudgetModel({
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
     max: req.body.max,
   });
 
   try {
-    const result = await recipe.save();
+    const result = await budget.save();
+    console.log(user);
     user.budgets.push(result._id);
+    await user.save();
     res.status(201).json({ budget: user.budgets });
   } catch (err) {
     // console.log(err);

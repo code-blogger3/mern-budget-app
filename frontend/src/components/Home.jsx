@@ -28,7 +28,7 @@ function Home() {
         }
       );
 
-      alert("Recipe Created");
+      alert("buget created");
       //   navigate("/");
     } catch (error) {
       console.error(error);
@@ -53,6 +53,7 @@ function Home() {
           value={budget.max}
           onChange={handleChange}
         />
+        <button>add</button>
       </form>
     </>
   );

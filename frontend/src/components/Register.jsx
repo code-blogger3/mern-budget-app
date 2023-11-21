@@ -3,12 +3,12 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
-function Auth() {
+function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   //  const [_, setCookies] = useCookies(["access_token"]);
-  //  const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,6 +18,7 @@ function Auth() {
         password,
       });
       alert("Registration Completed! Now login.");
+      navigate("/login");
     } catch (error) {
       console.error(error);
     }
@@ -52,4 +53,4 @@ function Auth() {
   );
 }
 
-export default Auth;
+export default Register;
