@@ -1,7 +1,7 @@
 // import { PORT, mongoDBURL } from "./config.js";
 import express from "express";
 import mongoose from "mongoose";
-import "dotenv/config";
+import {} from "dotenv/config";
 import cors from "cors";
 import { userRouter } from "./routes/user.js";
 import { budgetRouter } from "./routes/budget.js";
