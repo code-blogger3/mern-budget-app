@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   const user = await UserModel.findById(req.body.userID);
   const budget = new BudgetModel({
     _id: new mongoose.Types.ObjectId(),
@@ -27,12 +27,10 @@ router.post("/", async (req, res) => {
 
   try {
     const result = await budget.save();
-    console.log(user);
     user.budgets.push(result._id);
     await user.save();
     res.status(201).json({ budget: user.budgets });
   } catch (err) {
-    // console.log(err);
     res.status(500).json(err);
   }
 });

@@ -4,6 +4,7 @@ const BudgetSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     max: { type: Number, required: true },
+    expenses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Expense" }],
   },
   { timestamps: true }
 );
