@@ -1,11 +1,12 @@
 // import { PORT, mongoDBURL } from "./config.js";
 import express from "express";
 import mongoose from "mongoose";
-import {} from "dotenv/config";
+import dotenv from "dotenv";
 import cors from "cors";
 import { userRouter } from "./routes/user.js";
 import { budgetRouter } from "./routes/budget.js";
 import { expenseRouter } from "./routes/expense.js";
+dotenv.config();
 
 const app = express();
 app.use(express.json());
