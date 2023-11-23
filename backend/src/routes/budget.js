@@ -10,8 +10,7 @@ router.get("/", async (req, res) => {
   const user = await UserModel.findById(req.body.userID);
   //getting id
   try {
-    const result = await UserModel.findById({});
-    res.status(200).json(result);
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
   }
