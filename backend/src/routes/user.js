@@ -15,7 +15,6 @@ router.post("/register", async (req, res) => {
   const newUser = new UserModel({ username, password: hashedPassword });
   await newUser.save();
   res.json({ message: "User registered successfully" });
-  res.json(user);
 });
 
 router.post("/login", async (req, res) => {
