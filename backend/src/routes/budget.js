@@ -7,7 +7,9 @@ import { BudgetModel } from "../models/Budget.js";
 const router = express.Router();
 
 router.get("/:userID", async (req, res) => {
-  const user = await UserModel.findById(req.params.userID).populate("budgets");
+  const user = await UserModel.findById(req.params.userID)
+    .populate("budgets")
+    .select("-password -__v");
   //getting id
   try {
     res.status(200).json(user);
