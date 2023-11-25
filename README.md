@@ -8,3 +8,4 @@ type module
 boiler plate code
 models users 0.0.0.0/0
 pac axios and react-cookie
+npm run dev

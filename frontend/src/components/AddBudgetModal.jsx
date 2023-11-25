@@ -11,6 +11,7 @@ import Sheet from "@mui/joy/Sheet";
 
 function AddBudgetModal({ closeModal, open }) {
   const userID = useGetUserID();
+  const navigate = useNavigate();
   const [cookies, _] = useCookies(["access_token"]);
   const [budget, setBudget] = useState({
     name: "",
@@ -32,9 +33,7 @@ function AddBudgetModal({ closeModal, open }) {
           headers: { authorization: cookies.access_token },
         }
       );
-
-      alert("buget created");
-      //   navigate("/");
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
@@ -73,7 +72,7 @@ function AddBudgetModal({ closeModal, open }) {
             >
               This is the modal title
             </Typography>
-            <Typography id="modal-desc" textColor="text.tertiary">
+            <div>
               <button onClick={() => closeModal(false)}>Cancel</button>
               <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name</label>
@@ -92,9 +91,9 @@ function AddBudgetModal({ closeModal, open }) {
                   value={budget.max}
                   onChange={handleChange}
                 />
-                <button>add</button>
+                <button type="submit">add</button>
               </form>
-            </Typography>
+            </div>
           </Sheet>
         </Modal>
       </section>

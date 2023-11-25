@@ -18,7 +18,6 @@ router.post("/", async (req, res) => {
     const result = await expense.save();
     budget.expenses.push(result._id);
     await budget.save();
-    res.status(201).json({ expense: budget.expenses });
   } catch (err) {
     res.status(500).json(err);
   }

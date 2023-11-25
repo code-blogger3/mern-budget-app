@@ -10,7 +10,7 @@ router.get("/:userID", async (req, res) => {
   const user = await UserModel.findById(req.params.userID)
     .populate("budgets")
     .select("-password -__v");
-  //getting id
+
   try {
     res.status(200).json(user);
   } catch (err) {
@@ -18,7 +18,7 @@ router.get("/:userID", async (req, res) => {
   }
 });
 
-router.post("/", verifyToken, async (req, res) => {
+router.post("/", async (req, res) => {
   const user = await UserModel.findById(req.body.userID);
   const budget = new BudgetModel({
     _id: new mongoose.Types.ObjectId(),
@@ -30,7 +30,7 @@ router.post("/", verifyToken, async (req, res) => {
     const result = await budget.save();
     user.budgets.push(result._id);
     await user.save();
-    res.status(201).json({ budget: user.budgets });
+    res.status(201);
   } catch (err) {
     res.status(500).json(err);
   }
