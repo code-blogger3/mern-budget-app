@@ -36,16 +36,11 @@ function Home() {
     setViewExpensesModalBudgetId(budgetID);
     console.log(budgetID);
   }
-  const getData = useCallback(async () => {
+  const getData = async () => {
     const result = await axios.get(`http://localhost:8001/budget/${userID}`);
     console.log(result.data);
     setBudgets(result.data.budgets);
-  }, []);
-  // const getData = async () => {
-  //   const result = await axios.get(`http://localhost:8001/budget/${userID}`);
-  //   console.log(result.data);
-  //   setBudgets(result.data.budgets);
-  // };
+  };
 
   useEffect(() => {
     setTimeout(() => {
