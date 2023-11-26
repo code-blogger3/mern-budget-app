@@ -6,6 +6,35 @@ import { ExpenseModel } from "../models/Expense.js";
 
 const router = express.Router();
 
+router.get("/:budgetID", async (req, res) => {
+  const budget = await BudgetModel.findById(req.params.budgetID).populate(
+    "expenses"
+  );
+  try {
+    res.status(200).json(budget);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+router.delete("/:expenseID", async (req, res) => {
+  const expenseID = req.params.expenseID;
+
+  try {
+    const result = await ExpenseModel.deleteOne({ _id: expenseID });
+
+    if (result.deletedCount > 0) {
+      // Document was deleted successfully
+      res.status(200).json({ message: "Expense deleted successfully." });
+    } else {
+      // No matching document found
+      res.status(404).json({ message: "Expense not found." });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 router.post("/", async (req, res) => {
   const budget = await BudgetModel.findById(req.body.budgetID);
   const expense = new ExpenseModel({

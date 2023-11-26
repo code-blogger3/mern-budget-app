@@ -6,12 +6,15 @@ import { useCookies } from "react-cookie";
 import { useGetUserID } from "../hooks/useGetUserID";
 import BudgetCards from "./BudgetCards";
 import AddExpenseModal from "./AddExpenseModal";
+import ViewExpensesModal from "./ViewExpensesModal";
 
 function Home() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+  const [showViewExpenseModal, setShowViewExpenseModal] = useState(false);
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState("");
-  const [a, setA] = useState();
+  const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] =
+    useState("");
 
   const [budgets, setBudgets] = useState([]);
   const userID = useGetUserID();
@@ -21,11 +24,15 @@ function Home() {
     window.localStorage.clear();
     // navigate("/auth");
   };
-  const ExpenseModalBudgetId = useRef();
 
-  function openAddExpenseModal(budgetId) {
+  function openAddExpenseModal(budgetID) {
     setShowAddExpenseModal(true);
-    setAddExpenseModalBudgetId(budgetId);
+    setAddExpenseModalBudgetId(budgetID);
+  }
+  function openViewExpensesModal(budgetID) {
+    setShowViewExpenseModal(true);
+    setViewExpensesModalBudgetId(budgetID);
+    console.log(budgetID);
   }
   const getData = async () => {
     const result = await axios.get(`http://localhost:8001/budget/${userID}`);
@@ -35,10 +42,6 @@ function Home() {
   useEffect(() => {
     getData();
   }, []);
-  // useEffect(() => {
-  //   ExpenseModalBudgetId.current = addExpenseModalBudgetId;
-  //   setA(ExpenseModalBudgetId.current);
-  // }, [addExpenseModalBudgetId, ExpenseModalBudgetId.current]);
 
   return (
     <>
@@ -58,7 +61,7 @@ function Home() {
             name={budget.name}
             max={budget.max}
             onAddExpenseClick={() => openAddExpenseModal(budget._id)}
-            budgetID={budget._id}
+            onViewExpensesClick={() => openViewExpensesModal(budget._id)}
           />
         );
       })}
@@ -71,6 +74,11 @@ function Home() {
         open={showAddExpenseModal}
         closeModal={setShowAddExpenseModal}
         defaultBudgetId={addExpenseModalBudgetId}
+      />
+      <ViewExpensesModal
+        budgetID={viewExpensesModalBudgetId}
+        open={showViewExpenseModal}
+        closeModal={setShowViewExpenseModal}
       />
     </>
   );

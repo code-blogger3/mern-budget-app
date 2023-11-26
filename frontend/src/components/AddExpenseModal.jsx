@@ -13,7 +13,7 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
     description: "",
     amount: 0,
   });
-  console.log(defaultBudgetId);
+  // console.log(defaultBudgetId);
   // const navigate = useNavigate();
   const handleChange = (event) => {
     const { name, value } = event.target;
