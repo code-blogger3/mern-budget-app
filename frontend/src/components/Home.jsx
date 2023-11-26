@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import AddBudgetModal from "./AddBudgetModal";
 import Button from "@mui/joy/Button";
 import axios from "axios";
@@ -7,6 +7,8 @@ import { useGetUserID } from "../hooks/useGetUserID";
 import BudgetCards from "./BudgetCards";
 import AddExpenseModal from "./AddExpenseModal";
 import ViewExpensesModal from "./ViewExpensesModal";
+import { useRecoilState } from "recoil";
+import { BudgetState } from "../states/atoms/BudgetExpense";
 
 function Home() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -16,7 +18,7 @@ function Home() {
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] =
     useState("");
 
-  const [budgets, setBudgets] = useState([]);
+  const [budgets, setBudgets] = useRecoilState(BudgetState);
   const userID = useGetUserID();
   const [cookies, setCookies] = useCookies(["access_token"]);
   const logout = () => {
@@ -34,14 +36,22 @@ function Home() {
     setViewExpensesModalBudgetId(budgetID);
     console.log(budgetID);
   }
-  const getData = async () => {
+  const getData = useCallback(async () => {
     const result = await axios.get(`http://localhost:8001/budget/${userID}`);
     console.log(result.data);
     setBudgets(result.data.budgets);
-  };
-  useEffect(() => {
-    getData();
   }, []);
+  // const getData = async () => {
+  //   const result = await axios.get(`http://localhost:8001/budget/${userID}`);
+  //   console.log(result.data);
+  //   setBudgets(result.data.budgets);
+  // };
+
+  useEffect(() => {
+    setTimeout(() => {
+      getData();
+    }, 200);
+  }, [showAddBudgetModal]);
 
   return (
     <>

@@ -21,14 +21,12 @@ function BudgetCards({
       <div>{name}</div>
       <div>{max}</div>
       <div>
-        <div>
-          <Button onClick={onAddExpenseClick} variant="solid">
-            Add Expenses
-          </Button>
-          <Button onClick={onViewExpensesClick} variant="outlined">
-            View Expenses
-          </Button>
-        </div>
+        <Button onClick={onAddExpenseClick} variant="solid">
+          Add Expenses
+        </Button>
+        <Button onClick={onViewExpensesClick} variant="outlined">
+          View Expenses
+        </Button>
         <button onClick={deleteExpense}>delete</button>
       </div>
     </Card>
