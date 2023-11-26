@@ -23,8 +23,7 @@ function AddBudgetModal({ closeModal, open }) {
     setBudget({ ...budget, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     try {
       await axios.post(
         "http://localhost:8001/budget",
@@ -38,6 +37,18 @@ function AddBudgetModal({ closeModal, open }) {
       console.error(error);
     }
   };
+
+  function clean() {
+    closeModal(false);
+    setBudget({
+      name: "",
+      max: 0,
+    });
+  }
+  function triggerFunctions() {
+    handleSubmit();
+    clean();
+  }
   return (
     <>
       <section>
@@ -74,25 +85,24 @@ function AddBudgetModal({ closeModal, open }) {
             </Typography>
             <div>
               <button onClick={() => closeModal(false)}>Cancel</button>
-              <form onSubmit={handleSubmit}>
-                <label htmlFor="name">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={budget.name}
-                  onChange={handleChange}
-                />
-                <label htmlFor="max">Maximum amount</label>
-                <input
-                  type="number"
-                  name="max"
-                  id="max"
-                  value={budget.max}
-                  onChange={handleChange}
-                />
-                <button type="submit">add</button>
-              </form>
+
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={budget.name}
+                onChange={handleChange}
+              />
+              <label htmlFor="max">Maximum amount</label>
+              <input
+                type="number"
+                name="max"
+                id="max"
+                value={budget.max}
+                onChange={handleChange}
+              />
+              <button onClick={triggerFunctions}>add</button>
             </div>
           </Sheet>
         </Modal>

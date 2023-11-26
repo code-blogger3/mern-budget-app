@@ -43,7 +43,6 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
   function triggerFunctions() {
     handleSubmit();
     clean();
-    // Add more functions if needed
   }
   return (
     <>

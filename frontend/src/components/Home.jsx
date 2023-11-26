@@ -54,17 +54,16 @@ function Home() {
         Open modal
       </Button>
 
-      {budgets.map((budget) => {
-        return (
-          <BudgetCards
-            key={budget._id}
-            name={budget.name}
-            max={budget.max}
-            onAddExpenseClick={() => openAddExpenseModal(budget._id)}
-            onViewExpensesClick={() => openViewExpensesModal(budget._id)}
-          />
-        );
-      })}
+      {budgets.map((budget) => (
+        <BudgetCards
+          key={budget._id}
+          name={budget.name}
+          max={budget.max}
+          onAddExpenseClick={() => openAddExpenseModal(budget._id)}
+          onViewExpensesClick={() => openViewExpensesModal(budget._id)}
+          budgetID={budget._id}
+        />
+      ))}
 
       <AddBudgetModal
         open={showAddBudgetModal}

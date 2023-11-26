@@ -9,6 +9,7 @@ import Stack from "@mui/joy/Stack";
 function ViewExpensesModal({ budgetID, closeModal, open }) {
   const [expenses, setExpenses] = useState([]);
   const [budgetName, setBudgetName] = useState("");
+  const [deletedExpenseId, setDeletedExpenseId] = useState(null);
 
   const getBudgetExpenses = async () => {
     const result = await axios.get(`http://localhost:8001/expense/${budgetID}`);
@@ -17,12 +18,16 @@ function ViewExpensesModal({ budgetID, closeModal, open }) {
     setExpenses(result.data.expenses);
   };
   const deleteExpense = async (expenseID) => {
-    await axios.delete(`http://localhost:8001/expense/${expenseID}`);
+    try {
+      await axios.delete(`http://localhost:8001/expense/${expenseID}`);
+      setDeletedExpenseId(expenseID); // Trigger a re-render by changing the state
+    } catch (error) {
+      console.error(error);
+    }
   };
-
   useEffect(() => {
     getBudgetExpenses();
-  }, [budgetID]);
+  }, [budgetID, deletedExpenseId, open]);
 
   // console.log(expenses);
   return (
