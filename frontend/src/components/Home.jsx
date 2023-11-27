@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddBudgetModal from "./AddBudgetModal";
 import Button from "@mui/joy/Button";
-import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useGetUserID } from "../hooks/useGetUserID";
 import BudgetCards from "./BudgetCards";
@@ -9,6 +8,7 @@ import AddExpenseModal from "./AddExpenseModal";
 import ViewExpensesModal from "./ViewExpensesModal";
 import { useRecoilState } from "recoil";
 import { BudgetState } from "../states/atoms/BudgetExpense";
+import { deleteBudget, getBudgets } from "../api/api";
 
 function Home() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -36,16 +36,25 @@ function Home() {
     setViewExpensesModalBudgetId(budgetID);
     console.log(budgetID);
   }
-  const getData = async () => {
-    const result = await axios.get(`http://localhost:8001/budget/${userID}`);
+
+  const DeleteBudget = async (budgetID) => {
+    try {
+      await deleteBudget(budgetID);
+      setBudgets(budgets.filter((budget) => budget._id != budgetID));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const GetBudgets = async () => {
+    const result = await getBudgets(userID);
     console.log(result.data);
     setBudgets(result.data.budgets);
   };
 
   useEffect(() => {
     setTimeout(() => {
-      getData();
-    }, 200);
+      GetBudgets();
+    }, 1000);
   }, [showAddBudgetModal]);
 
   return (
@@ -66,7 +75,10 @@ function Home() {
           max={budget.max}
           onAddExpenseClick={() => openAddExpenseModal(budget._id)}
           onViewExpensesClick={() => openViewExpensesModal(budget._id)}
+          onDeleteBudget={() => DeleteBudget(budget._id)}
           budgetID={budget._id}
+          setBudgets={setBudgets}
+          budgets={budgets}
         />
       ))}
 

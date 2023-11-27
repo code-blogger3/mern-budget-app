@@ -1,4 +1,3 @@
-import axios from "axios";
 // import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
 // import { useCookies } from "react-cookie";
@@ -7,6 +6,7 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
+import { postExpense } from "../api/api";
 
 function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
   const [expense, setExpense] = useState({
@@ -23,12 +23,8 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
   const budgetID = defaultBudgetId;
   const handleSubmit = async () => {
     try {
-      await axios.post("http://localhost:8001/expense", {
-        ...expense,
-        budgetID,
-      });
+      await postExpense(expense, budgetID);
       //   auth
-      console.log("API request successful");
     } catch (error) {
       console.error(error);
     }

@@ -1,33 +1,32 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Stack from "@mui/joy/Stack";
+import { deleteExpense, getBudgetExpenses } from "../api/api";
 
 function ViewExpensesModal({ budgetID, closeModal, open }) {
   const [expenses, setExpenses] = useState([]);
   const [budgetName, setBudgetName] = useState("");
-  const [deletedExpenseId, setDeletedExpenseId] = useState(null);
 
-  const getBudgetExpenses = async () => {
-    const result = await axios.get(`http://localhost:8001/expense/${budgetID}`);
+  const GetBudgetExpenses = async () => {
+    await getBudgetExpenses(budgetID);
     console.log(result.data.expenses);
     setBudgetName(result.data.name);
     setExpenses(result.data.expenses);
   };
-  const deleteExpense = async (expenseID) => {
+  const DeleteExpense = async (expenseID) => {
     try {
-      await axios.delete(`http://localhost:8001/expense/${expenseID}`);
-      setDeletedExpenseId(expenseID); // Trigger a re-render by changing the state
+      await deleteExpense(expenseID);
+      setExpenses(expenses.filter((expense) => expense._id != expenseID));
     } catch (error) {
       console.error(error);
     }
   };
   useEffect(() => {
-    getBudgetExpenses();
-  }, [budgetID, deletedExpenseId, open]);
+    GetBudgetExpenses();
+  }, [budgetID, open]);
 
   // console.log(expenses);
   return (
@@ -79,7 +78,7 @@ function ViewExpensesModal({ budgetID, closeModal, open }) {
                 key={expense._id}
               >
                 <span>{expense.description}</span>
-                <button onClick={() => deleteExpense(expense._id)}>X</button>
+                <button onClick={() => DeleteExpense(expense._id)}>X</button>
               </Stack>
             ))}
           </Stack>

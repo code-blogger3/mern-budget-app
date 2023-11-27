@@ -1,21 +1,13 @@
 import Card from "@mui/joy/Card";
 import Button from "@mui/joy/Button";
-import axios from "axios";
 
 function BudgetCards({
   name,
   max,
   onAddExpenseClick,
   onViewExpensesClick,
-  budgetID,
+  onDeleteBudget,
 }) {
-  const deleteExpense = async () => {
-    try {
-      await axios.delete(`http://localhost:8001/budget/${budgetID}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
     <Card color="primary" orientation="vertical" size="sm">
       <div>{name}</div>
@@ -27,7 +19,7 @@ function BudgetCards({
         <Button onClick={onViewExpensesClick} variant="outlined">
           View Expenses
         </Button>
-        <button onClick={deleteExpense}>delete</button>
+        <button onClick={onDeleteBudget}>delete</button>
       </div>
     </Card>
   );
