@@ -8,7 +8,7 @@ import AddExpenseModal from "./AddExpenseModal";
 import ViewExpensesModal from "./ViewExpensesModal";
 import { useRecoilState } from "recoil";
 import { BudgetState } from "../states/atoms/BudgetExpense";
-import { deleteBudget, getBudgets } from "../api/api";
+import { deleteBudget, getBudgets, postBudget } from "../api/api";
 
 function Home() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -27,9 +27,9 @@ function Home() {
     // navigate("/auth");
   };
 
-  function openAddExpenseModal(budgetID) {
+  function openAddExpenseModal(budgetID_or_userID) {
     setShowAddExpenseModal(true);
-    setAddExpenseModalBudgetId(budgetID);
+    setAddExpenseModalBudgetId(budgetID_or_userID);
   }
   function openViewExpensesModal(budgetID) {
     setShowViewExpenseModal(true);
@@ -47,15 +47,19 @@ function Home() {
   };
   const GetBudgets = async () => {
     const result = await getBudgets(userID);
+    // console.log(result.data);
+    setBudgets(result.data.budgets);
+  };
+
+  const PostBudget = async (budget, userID, cookies) => {
+    const result = await postBudget(budget, userID, cookies);
     console.log(result.data);
     setBudgets(result.data.budgets);
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      GetBudgets();
-    }, 1000);
-  }, [showAddBudgetModal]);
+    GetBudgets();
+  }, []);
 
   return (
     <>
@@ -65,12 +69,19 @@ function Home() {
         color="neutral"
         onClick={() => setShowAddBudgetModal(true)}
       >
-        Open modal
+        Add Budget
+      </Button>
+      <Button
+        variant="outlined"
+        color="neutral"
+        onClick={() => openAddExpenseModal(userID)}
+      >
+        Add Expense
       </Button>
 
-      {budgets.map((budget) => (
+      {budgets.map((budget, id) => (
         <BudgetCards
-          key={budget._id}
+          key={id}
           name={budget.name}
           max={budget.max}
           onAddExpenseClick={() => openAddExpenseModal(budget._id)}
@@ -85,6 +96,7 @@ function Home() {
       <AddBudgetModal
         open={showAddBudgetModal}
         closeModal={setShowAddBudgetModal}
+        PostBudget={PostBudget}
       />
       <AddExpenseModal
         open={showAddExpenseModal}

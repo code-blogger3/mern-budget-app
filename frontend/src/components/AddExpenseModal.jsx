@@ -1,29 +1,39 @@
-// import { useGetUserID } from "../hooks/useGetUserID";
+import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
 // import { useCookies } from "react-cookie";
-import { useState } from "react";
+import { Form } from "react-bootstrap";
+import { useRef, useState } from "react";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import { postExpense } from "../api/api";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
+import { useRecoilState } from "recoil";
+import { BudgetState } from "../states/atoms/BudgetExpense";
 
 function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
+  const budgets = useRecoilState(BudgetState);
+  // console.log(budgets[0]);
+  const budgetList = budgets[0];
+  // console.log(budgetList.map((budget) => budget.name));
+  const budgetIdRef = useRef();
   const [expense, setExpense] = useState({
     description: "",
     amount: 0,
   });
-  // console.log(defaultBudgetId);
-  // const navigate = useNavigate();
+  const userID = useGetUserID();
   const handleChange = (event) => {
     const { name, value } = event.target;
     setExpense({ ...expense, [name]: value });
   };
 
-  const budgetID = defaultBudgetId;
+  // const budgetID = defaultBudgetId;
+  console.log(budgetIdRef.current?.value);
   const handleSubmit = async () => {
     try {
-      await postExpense(expense, budgetID);
+      await postExpense(expense, budgetIdRef.current?.value, userID);
       //   auth
     } catch (error) {
       console.error(error);
@@ -93,6 +103,24 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
                 value={expense.amount}
                 onChange={handleChange}
               />
+              <div>
+                {/* <Select defaultValue={defaultBudgetId} value={budgetIdRef}>
+                  <Option value={userID}>Uncategorized</Option>
+                  {budgetList.map((budget) => (
+                    <Option key={budget._id} value={budget._id}>
+                      {budget.name}
+                    </Option>
+                  ))}
+                </Select> */}
+                <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
+                  <option value={userID}>Uncategorized</option>
+                  {budgetList.map((budget) => (
+                    <option key={budget._id} value={budget._id}>
+                      {budget.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </div>
               <button onClick={triggerFunctions}>add</button>
             </div>
           </Sheet>

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 // import { verifyToken } from "./user.js";
 import { BudgetModel } from "../models/Budget.js";
 import { ExpenseModel } from "../models/Expense.js";
+import { UserModel } from "../models/User.js";
 
 const router = express.Router();
 
@@ -36,19 +37,35 @@ router.delete("/:expenseID", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const budget = await BudgetModel.findById(req.body.budgetID);
-  const expense = new ExpenseModel({
-    _id: new mongoose.Types.ObjectId(),
-    description: req.body.description,
-    amount: req.body.amount,
-  });
+  if (req.body.budgetID == req.body.userID) {
+    const user = await UserModel.findById(req.body.userID);
+    const expense = new ExpenseModel({
+      _id: new mongoose.Types.ObjectId(),
+      description: req.body.description,
+      amount: req.body.amount,
+    });
+    try {
+      const result = await expense.save();
+      user.uncategorizedExpenses.push(result._id);
+      await user.save();
+    } catch (error) {
+      res.status(500).json(err);
+    }
+  } else {
+    const budget = await BudgetModel.findById(req.body.budgetID);
+    const expense = new ExpenseModel({
+      _id: new mongoose.Types.ObjectId(),
+      description: req.body.description,
+      amount: req.body.amount,
+    });
 
-  try {
-    const result = await expense.save();
-    budget.expenses.push(result._id);
-    await budget.save();
-  } catch (err) {
-    res.status(500).json(err);
+    try {
+      const result = await expense.save();
+      budget.expenses.push(result._id);
+      await budget.save();
+    } catch (err) {
+      res.status(500).json(err);
+    }
   }
 });
 

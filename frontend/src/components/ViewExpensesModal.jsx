@@ -11,7 +11,7 @@ function ViewExpensesModal({ budgetID, closeModal, open }) {
   const [budgetName, setBudgetName] = useState("");
 
   const GetBudgetExpenses = async () => {
-    await getBudgetExpenses(budgetID);
+    const result = await getBudgetExpenses(budgetID);
     console.log(result.data.expenses);
     setBudgetName(result.data.name);
     setExpenses(result.data.expenses);

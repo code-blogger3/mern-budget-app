@@ -9,7 +9,7 @@ import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 // import "../styles/addBudgetModal.css";
 
-function AddBudgetModal({ closeModal, open }) {
+function AddBudgetModal({ closeModal, open, PostBudget }) {
   const userID = useGetUserID();
   const navigate = useNavigate();
   const [cookies, _] = useCookies(["access_token"]);
@@ -25,14 +25,8 @@ function AddBudgetModal({ closeModal, open }) {
 
   const handleSubmit = async () => {
     try {
-      await axios.post(
-        "http://localhost:8001/budget",
-        { ...budget, userID },
-        {
-          headers: { authorization: cookies.access_token },
-        }
-      );
-      navigate("/");
+      await PostBudget(budget, userID, cookies);
+      // navigate("/");
     } catch (error) {
       console.error(error);
     }

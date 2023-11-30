@@ -37,22 +37,71 @@ router.delete("/:budgetID", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  const user = await UserModel.findById(req.body.userID);
+const createBudget = async (name, max) => {
   const budget = new BudgetModel({
     _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    max: req.body.max,
+    name,
+    max,
   });
 
   try {
     const result = await budget.save();
-    user.budgets.push(result._id);
-    await user.save();
-    res.status(201);
-  } catch (err) {
-    res.status(500).json(err);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const addUserBudget = async (userId, budgetId) => {
+  try {
+    const user = await UserModel.findByIdAndUpdate(
+      userId,
+      { $push: { budgets: budgetId } },
+      { new: true }
+    ).populate("budgets");
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+router.post("/", async (req, res) => {
+  try {
+    const { userID, name, max } = req.body;
+
+    const budget = await createBudget(name, max);
+
+    const updatedUser = await addUserBudget(userID, budget._id);
+
+    res.status(201).json({
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      budgets: updatedUser.budgets,
+    });
+  } catch (error) {
+    console.error("Error creating budget:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 export { router as budgetRouter };
+// router.post("/", async (req, res) => {
+//   const user = await UserModel.findById(req.body.userID);
+//   const budget = new BudgetModel({
+//     _id: new mongoose.Types.ObjectId(),
+//     name: req.body.name,
+//     max: req.body.max,
+//   });
+
+//   try {
+//     const result = await budget.save();
+//     user.budgets.push(result._id);
+//     await user.save();
+//     const user = await UserModel.findById(req.body.userID)
+//       .populate("budgets")
+//       .select("-password -__v");
+//     res.status(201).json(user);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
