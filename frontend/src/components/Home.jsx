@@ -9,6 +9,7 @@ import ViewExpensesModal from "./ViewExpensesModal";
 import { useRecoilState } from "recoil";
 import { BudgetState } from "../states/atoms/BudgetExpense";
 import { deleteBudget, getBudgets, postBudget } from "../api/api";
+import UncategorizedBudget from "./UncategorizedBudget";
 
 function Home() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -92,6 +93,9 @@ function Home() {
           budgets={budgets}
         />
       ))}
+      <UncategorizedBudget
+        onViewExpensesClick={() => openViewExpensesModal(userID)}
+      />
 
       <AddBudgetModal
         open={showAddBudgetModal}
@@ -107,6 +111,7 @@ function Home() {
         budgetID={viewExpensesModalBudgetId}
         open={showViewExpenseModal}
         closeModal={setShowViewExpenseModal}
+        userID={userID}
       />
     </>
   );

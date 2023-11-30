@@ -17,8 +17,10 @@ export async function deleteExpense(expenseID) {
   await axios.delete(`http://localhost:8001/expense/${expenseID}`);
 }
 
-export async function getBudgetExpenses(budgetID) {
-  const result = await axios.get(`http://localhost:8001/expense/${budgetID}`);
+export async function getBudgetExpenses(budgetID, userID) {
+  const result = await axios.get(
+    `http://localhost:8001/expense/${budgetID}/${userID}`
+  );
   return result;
 }
 

@@ -6,12 +6,12 @@ import Sheet from "@mui/joy/Sheet";
 import Stack from "@mui/joy/Stack";
 import { deleteExpense, getBudgetExpenses } from "../api/api";
 
-function ViewExpensesModal({ budgetID, closeModal, open }) {
+function ViewExpensesModal({ budgetID, closeModal, open, userID }) {
   const [expenses, setExpenses] = useState([]);
   const [budgetName, setBudgetName] = useState("");
 
   const GetBudgetExpenses = async () => {
-    const result = await getBudgetExpenses(budgetID);
+    const result = await getBudgetExpenses(budgetID, userID);
     console.log(result.data.expenses);
     setBudgetName(result.data.name);
     setExpenses(result.data.expenses);
