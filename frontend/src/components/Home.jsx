@@ -7,8 +7,8 @@ import BudgetCards from "./BudgetCards";
 import AddExpenseModal from "./AddExpenseModal";
 import ViewExpensesModal from "./ViewExpensesModal";
 import { useRecoilState } from "recoil";
-import { BudgetState } from "../states/atoms/BudgetExpense";
-import { deleteBudget, getBudgets, postBudget } from "../api/api";
+import { BudgetState, ExpenseState } from "../states/atoms/BudgetExpense";
+import { deleteBudget, getBudgets, getExpenses, postBudget } from "../api/api";
 import UncategorizedBudget from "./UncategorizedBudget";
 
 function Home() {
@@ -20,6 +20,7 @@ function Home() {
     useState("");
 
   const [budgets, setBudgets] = useRecoilState(BudgetState);
+  const [expenses, setExpenses] = useRecoilState(ExpenseState);
   const userID = useGetUserID();
   const [cookies, setCookies] = useCookies(["access_token"]);
   const logout = () => {
@@ -48,8 +49,11 @@ function Home() {
   };
   const GetBudgets = async () => {
     const result = await getBudgets(userID);
-    // console.log(result.data);
     setBudgets(result.data.budgets);
+  };
+  const GetExpenses = async () => {
+    const result = await getExpenses(userID);
+    console.log(result);
   };
 
   const PostBudget = async (budget, userID, cookies) => {
@@ -58,8 +62,18 @@ function Home() {
     setBudgets(result.data.budgets);
   };
 
+  // async function getExpensesAmount(budgetID, userID) {
+  //   const result = await getBudgetExpenses(budgetID, userID);
+  //   const amount = result.data.expenses.reduce(
+  //     (total, expense) => total + expense.amount,
+  //     0
+  //   );
+  //   const percentage = (amount / max) * 100;
+  //   return percentage;
+  // }
   useEffect(() => {
     GetBudgets();
+    GetExpenses();
   }, []);
 
   return (
@@ -80,19 +94,21 @@ function Home() {
         Add Expense
       </Button>
 
-      {budgets.map((budget, id) => (
-        <BudgetCards
-          key={id}
-          name={budget.name}
-          max={budget.max}
-          onAddExpenseClick={() => openAddExpenseModal(budget._id)}
-          onViewExpensesClick={() => openViewExpensesModal(budget._id)}
-          onDeleteBudget={() => DeleteBudget(budget._id)}
-          budgetID={budget._id}
-          setBudgets={setBudgets}
-          budgets={budgets}
-        />
-      ))}
+      {budgets.map((budget, id) => {
+        return (
+          <BudgetCards
+            key={id}
+            name={budget.name}
+            max={budget.max}
+            onAddExpenseClick={() => openAddExpenseModal(budget._id)}
+            onViewExpensesClick={() => openViewExpensesModal(budget._id)}
+            onDeleteBudget={() => DeleteBudget(budget._id)}
+            budgetID={budget._id}
+            budgets={budgets}
+            userID={userID}
+          />
+        );
+      })}
       <UncategorizedBudget
         onViewExpensesClick={() => openViewExpensesModal(userID)}
       />

@@ -5,7 +5,7 @@ import { verifyToken } from "./user.js";
 import { BudgetModel } from "../models/Budget.js";
 
 const router = express.Router();
-
+//safe
 router.get("/:userID", async (req, res) => {
   const user = await UserModel.findById(req.params.userID)
     .populate("budgets")
@@ -17,7 +17,7 @@ router.get("/:userID", async (req, res) => {
     res.status(500).json(err);
   }
 });
-
+//safe
 router.delete("/:budgetID", async (req, res) => {
   const budgetID = req.params.budgetID;
 
@@ -64,7 +64,7 @@ const addUserBudget = async (userId, budgetId) => {
     throw error;
   }
 };
-
+// safe
 router.post("/", async (req, res) => {
   try {
     const { userID, name, max } = req.body;
@@ -85,23 +85,3 @@ router.post("/", async (req, res) => {
 });
 
 export { router as budgetRouter };
-// router.post("/", async (req, res) => {
-//   const user = await UserModel.findById(req.body.userID);
-//   const budget = new BudgetModel({
-//     _id: new mongoose.Types.ObjectId(),
-//     name: req.body.name,
-//     max: req.body.max,
-//   });
-
-//   try {
-//     const result = await budget.save();
-//     user.budgets.push(result._id);
-//     await user.save();
-//     const user = await UserModel.findById(req.body.userID)
-//       .populate("budgets")
-//       .select("-password -__v");
-//     res.status(201).json(user);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });

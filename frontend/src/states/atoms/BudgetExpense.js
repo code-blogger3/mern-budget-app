@@ -8,3 +8,9 @@ export const BudgetState = atom({
   default: [],
   effects_UNSTABLE: [persistAtom],
 });
+
+export const ExpenseState = atom({
+  key: "Expenses",
+  default: [],
+  effects_UNSTABLE: [persistAtom],
+});

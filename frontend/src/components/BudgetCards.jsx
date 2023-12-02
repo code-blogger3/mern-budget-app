@@ -1,5 +1,7 @@
 import Card from "@mui/joy/Card";
 import Button from "@mui/joy/Button";
+import { useEffect, useState } from "react";
+import LinearProgress from "@mui/joy/LinearProgress";
 
 function BudgetCards({
   name,
@@ -7,11 +9,31 @@ function BudgetCards({
   onAddExpenseClick,
   onViewExpensesClick,
   onDeleteBudget,
+  getExpensesAmount,
+  budgetID,
+  userID,
 }) {
+  const [progressBarLevel, setProgressBarLevel] = useState(0);
+
+  // async function GetExpenseAmount() {
+  //   const percentage = await getExpensesAmount(budgetID, userID);
+  //   console.log(percentage);
+  //   setProgressBarLevel(percentage);
+  // }
+  // useEffect(() => {
+  //   GetExpenseAmount();
+  // }, []);
+  // console.log(amount);
   return (
     <Card color="primary" orientation="vertical" size="sm">
-      <div>{name}</div>
+      <div>
+        {name}
+        <span>
+          {progressBarLevel}/{max}
+        </span>
+      </div>
       <div>{max}</div>
+      <LinearProgress determinate value={progressBarLevel} />
       <div>
         <Button onClick={onAddExpenseClick} variant="solid">
           Add Expenses

@@ -8,16 +8,12 @@ import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import { postExpense } from "../api/api";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
 import { useRecoilState } from "recoil";
 import { BudgetState } from "../states/atoms/BudgetExpense";
 
 function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
   const budgets = useRecoilState(BudgetState);
-  // console.log(budgets[0]);
   const budgetList = budgets[0];
-  // console.log(budgetList.map((budget) => budget.name));
   const budgetIdRef = useRef();
   const [expense, setExpense] = useState({
     description: "",
@@ -29,8 +25,6 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
     setExpense({ ...expense, [name]: value });
   };
 
-  // const budgetID = defaultBudgetId;
-  console.log(budgetIdRef.current?.value);
   const handleSubmit = async () => {
     try {
       await postExpense(expense, budgetIdRef.current?.value, userID);
@@ -104,14 +98,6 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
                 onChange={handleChange}
               />
               <div>
-                {/* <Select defaultValue={defaultBudgetId} value={budgetIdRef}>
-                  <Option value={userID}>Uncategorized</Option>
-                  {budgetList.map((budget) => (
-                    <Option key={budget._id} value={budget._id}>
-                      {budget.name}
-                    </Option>
-                  ))}
-                </Select> */}
                 <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
                   <option value={userID}>Uncategorized</option>
                   {budgetList.map((budget) => (
