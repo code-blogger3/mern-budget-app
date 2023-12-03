@@ -1,27 +1,21 @@
 import { useState } from "react";
-import axios from "axios";
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../services/userApis";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   //  const [_, setCookies] = useCookies(["access_token"]);
-  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:8001/auth/register", {
-        username,
-        password,
-      });
+      await registerUser(username, password);
       alert("Registration Completed! Now login.");
       navigate("/login");
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
   return (
     <>

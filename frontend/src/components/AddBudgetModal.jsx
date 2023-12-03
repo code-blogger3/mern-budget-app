@@ -1,35 +1,37 @@
-import axios from "axios";
 import { useGetUserID } from "../hooks/useGetUserID";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 import { useState } from "react";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
+import { postBudget } from "../services/api";
+import { useSetRecoilState } from "recoil";
+import { BudgetState } from "../states/atoms/BudgetExpense";
 // import "../styles/addBudgetModal.css";
 
-function AddBudgetModal({ closeModal, open, PostBudget }) {
+function AddBudgetModal({ closeModal, open }) {
   const userID = useGetUserID();
   const navigate = useNavigate();
-  const [cookies, _] = useCookies(["access_token"]);
+  // const [cookies, _] = useCookies(["access_token"]);
   const [budget, setBudget] = useState({
     name: "",
     max: 0,
   });
+  const setBudgets = useSetRecoilState(BudgetState);
+  const PostBudget = async () => {
+    try {
+      const result = await postBudget(budget, userID);
+      setBudgets(result.data.budgets);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setBudget({ ...budget, [name]: value });
-  };
-
-  const handleSubmit = async () => {
-    try {
-      await PostBudget(budget, userID, cookies);
-      // navigate("/");
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   function clean() {
@@ -40,7 +42,7 @@ function AddBudgetModal({ closeModal, open, PostBudget }) {
     });
   }
   function triggerFunctions() {
-    handleSubmit();
+    PostBudget();
     clean();
   }
   return (

@@ -5,9 +5,11 @@ import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Stack from "@mui/joy/Stack";
 import { deleteExpense } from "../services/api";
+import { useRecoilState } from "recoil";
+import { ExpenseState } from "../states/atoms/BudgetExpense";
 
 function ViewExpensesModal({ budgetID, closeModal, open, userID }) {
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useRecoilState(ExpenseState);
   const [budgetName, setBudgetName] = useState("");
 
   const DeleteExpense = async (expenseID) => {

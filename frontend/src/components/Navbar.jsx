@@ -1,7 +1,17 @@
-import React from "react";
+import { useCookies } from "react-cookie";
 
 function Navbar() {
-  return <div>Navbar</div>;
+  const [cookies, setCookies] = useCookies(["access_token"]);
+  const logout = () => {
+    setCookies("access_token", "");
+    window.localStorage.clear();
+    // navigate("/auth");
+  };
+  return (
+    <>
+      <button onClick={logout}> Logout </button>
+    </>
+  );
 }
 
 export default Navbar;

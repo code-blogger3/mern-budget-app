@@ -1,12 +1,8 @@
-// import { PORT, mongoDBURL } from "./config.js";
-import express from "express";
 import dotenv from "dotenv";
 
 import connectDB from "./db/index.js";
+import { app } from "./app.js";
 dotenv.config();
-
-const app = express();
-app.use(express.json());
 
 // PORT = 8001;
 connectDB()
@@ -18,14 +14,3 @@ connectDB()
   .catch((err) => {
     console.log("MONGO db connection failed !!! ", err);
   });
-// mongoose
-//   .connect(process.env.mongoDBURL)
-//   .then(() => {
-//     console.log("App connected to database");
-//     app.listen(8001, () => {
-//       console.log(`App is listening to port: ${8001}`);
-//     });
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });

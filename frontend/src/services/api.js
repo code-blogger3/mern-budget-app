@@ -25,13 +25,13 @@ export async function deleteBudget(budgetID) {
   await axios.delete(`http://localhost:8001/budget/${budgetID}`);
 }
 
-export async function postBudget(budget, userID, cookies) {
+export async function postBudget(budget, userID) {
   const result = await axios.post(
     "http://localhost:8001/budget",
-    { ...budget, userID },
-    {
-      headers: { authorization: cookies.access_token },
-    }
+    { ...budget, userID }
+    // {
+    //   headers: { authorization: cookies.access_token },
+    // }
   );
   return result;
 }

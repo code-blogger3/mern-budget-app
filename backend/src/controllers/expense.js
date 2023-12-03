@@ -1,4 +1,4 @@
-import { asyncHandler } from "../utils/asyncHandler";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import mongoose from "mongoose";
 // import { verifyToken } from "./user.js";
 import { BudgetModel } from "../models/Budget.js";
@@ -17,15 +17,12 @@ const sendUserExpenses = asyncHandler(async (req, res) => {
 async function sendExpense(userID, res) {
   try {
     const user = await UserModel.findById(userID)
-      .populate("Expenses")
-      .select("-password -__v");
+      .populate("expenses")
+      .select("-password -__v -budgets -username -_id");
 
     // Rename property before sending response
-    const responseUser = {
-      expenses: user.Expenses,
-    };
 
-    res.status(200).json(responseUser);
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
   }
