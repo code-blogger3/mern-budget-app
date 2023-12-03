@@ -8,7 +8,12 @@ import AddExpenseModal from "./AddExpenseModal";
 import ViewExpensesModal from "./ViewExpensesModal";
 import { useRecoilState } from "recoil";
 import { BudgetState, ExpenseState } from "../states/atoms/BudgetExpense";
-import { deleteBudget, getBudgets, getExpenses, postBudget } from "../api/api";
+import {
+  deleteBudget,
+  getBudgets,
+  getExpenses,
+  postBudget,
+} from "../services/api";
 import UncategorizedBudget from "./UncategorizedBudget";
 
 function Home() {

@@ -4,7 +4,7 @@ import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Stack from "@mui/joy/Stack";
-import { deleteExpense } from "../api/api";
+import { deleteExpense } from "../services/api";
 
 function ViewExpensesModal({ budgetID, closeModal, open, userID }) {
   const [expenses, setExpenses] = useState([]);

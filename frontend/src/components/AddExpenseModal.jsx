@@ -7,7 +7,7 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import { postExpense } from "../api/api";
+import { postExpense } from "../services/api";
 import { useRecoilState } from "recoil";
 import { BudgetState } from "../states/atoms/BudgetExpense";
 
