@@ -13,7 +13,7 @@ function BudgetCardList({
 
   const DeleteBudget = async (budgetID) => {
     try {
-      await deleteBudget(budgetID); //pop func
+      await deleteBudget(budgetID, userID); //pop func
       setBudgets(budgets.filter((budget) => budget._id != budgetID));
     } catch (error) {
       console.error(error);

@@ -5,8 +5,8 @@ async function getBudgets(userID) {
   return result;
 }
 
-async function deleteBudget(budgetID) {
-  await axios.delete(`http://localhost:8001/budget/${budgetID}`);
+async function deleteBudget(budgetID, userID) {
+  await axios.delete(`http://localhost:8001/budget/${budgetID}/${userID}`);
 }
 
 async function postBudget(budget, userID) {

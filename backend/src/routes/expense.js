@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.route("/:userID").get(sendUserExpenses);
 
-router.route("/:expenseID").delete(deleteUserExpense);
+router.route("/:expenseID/:userID").delete(deleteUserExpense);
 
 router.route("/").post(postUserExpense);
 

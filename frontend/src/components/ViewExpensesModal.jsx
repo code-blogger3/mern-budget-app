@@ -14,14 +14,13 @@ function ViewExpensesModal({ budgetID, closeModal, open, userID }) {
 
   const DeleteExpense = async (expenseID) => {
     try {
-      await deleteExpense(expenseID);
+      await deleteExpense(expenseID, userID);
       setExpenses(expenses.filter((expense) => expense._id != expenseID));
     } catch (error) {
       console.error(error);
     }
   };
 
-  // console.log(expenses);
   return (
     <section>
       <Modal

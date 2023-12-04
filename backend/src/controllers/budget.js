@@ -17,11 +17,13 @@ const sendUserBudget = asyncHandler(async (req, res) => {
 });
 
 const deleteUserBudget = asyncHandler(async (req, res) => {
-  const budgetID = req.params.budgetID;
+  const { budgetID, userID } = req.params;
 
   try {
     const result = await BudgetModel.deleteOne({ _id: budgetID });
-
+    const user = await UserModel.findById(userID);
+    user.budgets.remove(budgetID);
+    await user.save();
     if (result.deletedCount > 0) {
       // Document was deleted successfully
       res.status(200).json({ message: "Expense deleted successfully." });

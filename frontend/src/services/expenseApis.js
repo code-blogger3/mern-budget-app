@@ -8,8 +8,8 @@ async function postExpense(expenseDetails, userID) {
   return result;
 }
 
-async function deleteExpense(expenseID) {
-  await axios.delete(`http://localhost:8001/expense/${expenseID}`);
+async function deleteExpense(expenseID, userID) {
+  await axios.delete(`http://localhost:8001/expense/${expenseID}/${userID}`);
 }
 
 async function getExpenses(userID) {

@@ -29,11 +29,16 @@ async function sendExpense(userID, res) {
 }
 
 const deleteUserExpense = asyncHandler(async (req, res) => {
-  const expenseID = req.params.expenseID;
+  const { expenseID, userID } = req.params;
 
   try {
     const result = await ExpenseModel.deleteOne({ _id: expenseID });
+    console.log(result);
+    const user = await UserModel.findById(userID);
+    user.expenses.remove(expenseID);
+    await user.save();
 
+    console.log("Expense removed from user successfully");
     if (result.deletedCount > 0) {
       // Document was deleted successfully
       res.status(200).json({ message: "Expense deleted successfully." });

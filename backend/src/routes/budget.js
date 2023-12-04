@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.route("/:userID").get(sendUserBudget);
 
-router.route("/:budgetID").delete(deleteUserBudget);
+router.route("/:budgetID/:userID").delete(deleteUserBudget);
 
 router.route("/").post(postUserBudget);
 

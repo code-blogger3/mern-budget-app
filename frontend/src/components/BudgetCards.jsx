@@ -2,6 +2,8 @@ import Card from "@mui/joy/Card";
 import Button from "@mui/joy/Button";
 import { useEffect, useState } from "react";
 import LinearProgress from "@mui/joy/LinearProgress";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { ExpenseState } from "../states/atoms/BudgetExpense";
 
 function BudgetCards({
   name,
@@ -9,17 +11,26 @@ function BudgetCards({
   onAddExpenseClick,
   onViewExpensesClick,
   onDeleteBudget,
+  budgetID,
 }) {
   const [progressBarLevel, setProgressBarLevel] = useState(0);
+  const expenses = useRecoilValue(ExpenseState);
+  // console.log(expenses);
+  async function getExpenseAmount() {
+    const filteredExpenses = expenses.filter(
+      (expense) => expense.budgetID == budgetID
+    );
 
-  // async function GetExpenseAmount() {
-  //   const percentage = await getExpensesAmount(budgetID, userID);
-  //   console.log(percentage);
-  //   setProgressBarLevel(percentage);
-  // }
-  // useEffect(() => {
-  //   GetExpenseAmount();
-  // }, []);
+    const amount = filteredExpenses.reduce(
+      (total, filteredExpense) => total + filteredExpense.amount,
+      0
+    );
+    const percentage = (amount / max) * 100;
+    setProgressBarLevel(percentage);
+  }
+  useEffect(() => {
+    getExpenseAmount();
+  }, [expenses]);
   // console.log(amount);
   return (
     <Card color="primary" orientation="vertical" size="sm">
