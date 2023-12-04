@@ -7,14 +7,15 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import { postExpense } from "../services/api";
-import { useRecoilState } from "recoil";
-import { BudgetState } from "../states/atoms/BudgetExpense";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { BudgetState, ExpenseState } from "../states/atoms/BudgetExpense";
+import { postExpense } from "../services/expenseApis";
 
 function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
   const budgets = useRecoilState(BudgetState);
   const budgetList = budgets[0];
-  const budgetIdRef = useRef();
+  const budgetIDRef = useRef();
+  const setExpenses = useSetRecoilState(ExpenseState);
   const [expense, setExpense] = useState({
     description: "",
     amount: 0,
@@ -22,12 +23,18 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
   const userID = useGetUserID();
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setExpense({ ...expense, [name]: value });
+    setExpense({
+      ...expense,
+      [name]: value,
+      budgetID: budgetIDRef?.current.value,
+    });
   };
 
   const handleSubmit = async () => {
     try {
-      await postExpense(expense, budgetIdRef.current?.value, userID);
+      const result = await postExpense(expense, userID);
+      console.log(result.data.data);
+      setExpenses((prev) => [...prev, result.data.data]);
       //   auth
     } catch (error) {
       console.error(error);
@@ -98,7 +105,7 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
                 onChange={handleChange}
               />
               <div>
-                <Form.Select defaultValue={defaultBudgetId} ref={budgetIdRef}>
+                <Form.Select defaultValue={defaultBudgetId} ref={budgetIDRef}>
                   <option value={userID}>Uncategorized</option>
                   {budgetList.map((budget) => (
                     <option key={budget._id} value={budget._id}>

@@ -6,9 +6,10 @@ import AddExpenseModal from "./AddExpenseModal";
 import ViewExpensesModal from "./ViewExpensesModal";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { BudgetState, ExpenseState } from "../states/atoms/BudgetExpense";
-import { getBudgets, getExpenses } from "../services/api";
+import { getBudgets } from "../services/budgetApis";
 import UncategorizedBudget from "./UncategorizedBudget";
 import BudgetCardList from "./BudgetCardList";
+import { getExpenses } from "../services/expenseApis";
 
 function Home() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -28,7 +29,6 @@ function Home() {
   function openViewExpensesModal(budgetID) {
     setShowViewExpenseModal(true);
     setViewExpensesModalBudgetId(budgetID);
-    console.log(budgetID);
   }
 
   const GetBudgets = async () => {
@@ -37,7 +37,6 @@ function Home() {
   };
   const GetExpenses = async () => {
     const result = await getExpenses(userID);
-    console.log(result.data.expenses);
     setExpenses(result.data.expenses);
   };
 

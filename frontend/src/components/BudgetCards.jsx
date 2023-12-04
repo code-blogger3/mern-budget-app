@@ -9,9 +9,6 @@ function BudgetCards({
   onAddExpenseClick,
   onViewExpensesClick,
   onDeleteBudget,
-  getExpensesAmount,
-  budgetID,
-  userID,
 }) {
   const [progressBarLevel, setProgressBarLevel] = useState(0);
 

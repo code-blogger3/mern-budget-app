@@ -1,10 +1,14 @@
 import React from "react";
 import BudgetCards from "./BudgetCards";
-import { deleteBudget } from "../services/api";
+import { deleteBudget } from "../services/budgetApis";
 import { BudgetState } from "../states/atoms/BudgetExpense";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
-function BudgetCardList(openAddExpenseModal, openViewExpensesModal, userID) {
+function BudgetCardList({
+  openAddExpenseModal,
+  openViewExpensesModal,
+  userID,
+}) {
   const [budgets, setBudgets] = useRecoilState(BudgetState);
 
   const DeleteBudget = async (budgetID) => {

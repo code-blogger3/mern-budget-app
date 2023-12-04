@@ -68,7 +68,7 @@ async function handleUserExpense(userID, expenseDetails) {
   });
 
   const result = await expense.save();
-  user.Expenses.push(result._id);
+  user.expenses.push(result._id);
   await user.save();
   return result;
 }

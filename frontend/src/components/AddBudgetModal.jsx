@@ -6,7 +6,7 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import { postBudget } from "../services/api";
+import { postBudget } from "../services/budgetApis";
 import { useSetRecoilState } from "recoil";
 import { BudgetState } from "../states/atoms/BudgetExpense";
 // import "../styles/addBudgetModal.css";
