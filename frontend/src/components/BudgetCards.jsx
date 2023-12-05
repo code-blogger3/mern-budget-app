@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import LinearProgress from "@mui/joy/LinearProgress";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { ExpenseState } from "../states/atoms/BudgetExpense";
+import { currencyFormatter } from "../utils/currencyFormatter";
 
 function BudgetCards({
   name,
@@ -14,6 +15,7 @@ function BudgetCards({
   budgetID,
 }) {
   const [progressBarLevel, setProgressBarLevel] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
   const expenses = useRecoilValue(ExpenseState);
   // console.log(expenses);
   async function getExpenseAmount() {
@@ -25,8 +27,8 @@ function BudgetCards({
       (total, filteredExpense) => total + filteredExpense.amount,
       0
     );
-    const percentage = (amount / max) * 100;
-    setProgressBarLevel(percentage);
+    setTotalAmount(amount);
+    setProgressBarLevel((amount / max) * 100);
   }
   useEffect(() => {
     getExpenseAmount();
@@ -37,7 +39,8 @@ function BudgetCards({
       <div>
         {name}
         <span>
-          {progressBarLevel}/{max}
+          {currencyFormatter.format(totalAmount)}/
+          {currencyFormatter.format(max)}
         </span>
       </div>
       <div>{max}</div>

@@ -3,6 +3,8 @@ import BudgetCards from "./BudgetCards";
 import { deleteBudget } from "../services/budgetApis";
 import { BudgetState } from "../states/atoms/BudgetExpense";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { Grid } from "@mui/joy";
+import UncategorizedBudget from "./UncategorizedBudget";
 
 function BudgetCardList({
   openAddExpenseModal,
@@ -13,7 +15,7 @@ function BudgetCardList({
 
   const DeleteBudget = async (budgetID) => {
     try {
-      await deleteBudget(budgetID, userID); //pop func
+      await deleteBudget(budgetID, userID);
       setBudgets(budgets.filter((budget) => budget._id != budgetID));
     } catch (error) {
       console.error(error);
@@ -21,23 +23,37 @@ function BudgetCardList({
   };
   return (
     <>
-      <div>
+      <Grid
+        container
+        rowSpacing={1}
+        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        sx={{ width: "100%" }}
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
         {budgets?.length > 0 &&
           budgets.map((budget, id) => {
             return (
-              <BudgetCards
-                key={id}
-                name={budget.name}
-                max={budget.max}
-                onAddExpenseClick={() => openAddExpenseModal(budget._id)}
-                onViewExpensesClick={() => openViewExpensesModal(budget._id)}
-                onDeleteBudget={() => DeleteBudget(budget._id)}
-                budgetID={budget._id}
-                userID={userID}
-              />
+              <Grid xs={3.5} sx={{ margin: "12px 10px 10px 28px" }} key={id}>
+                <BudgetCards
+                  name={budget.name}
+                  max={budget.max}
+                  onAddExpenseClick={() => openAddExpenseModal(budget._id)}
+                  onViewExpensesClick={() => openViewExpensesModal(budget._id)}
+                  onDeleteBudget={() => DeleteBudget(budget._id)}
+                  budgetID={budget._id}
+                  userID={userID}
+                />
+              </Grid>
             );
           })}
-      </div>
+        <Grid xs={3.8} sx={{ margin: "12px 10px 10px 28px" }}>
+          <UncategorizedBudget
+            onViewExpensesClick={() => openViewExpensesModal(userID)}
+          />
+        </Grid>
+      </Grid>
     </>
   );
 }

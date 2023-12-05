@@ -11,6 +11,9 @@ import { deleteExpense } from "../services/expenseApis";
 function ViewExpensesModal({ budgetID, closeModal, open, userID }) {
   const [expenses, setExpenses] = useRecoilState(ExpenseState);
   const [budgetName, setBudgetName] = useState("");
+  const filteredExpenses = expenses.filter(
+    (expense) => expense.budgetID == budgetID
+  );
 
   const DeleteExpense = async (expenseID) => {
     try {
@@ -61,7 +64,7 @@ function ViewExpensesModal({ budgetID, closeModal, open, userID }) {
             alignItems="flex-start"
             spacing={1}
           >
-            {expenses.map((expense) => (
+            {filteredExpenses.map((expense) => (
               <Stack
                 direction="row"
                 justifyContent="center"

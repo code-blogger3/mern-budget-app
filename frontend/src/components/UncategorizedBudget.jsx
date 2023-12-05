@@ -4,9 +4,7 @@ import Button from "@mui/joy/Button";
 function UncategorizedBudget({ onViewExpensesClick }) {
   return (
     <Card color="primary" orientation="vertical" size="sm">
-      {/* <Button onClick={onAddExpenseClick} variant="solid">
-          Add Expenses
-        </Button> */}
+      <h6>Uncategorized Expenses</h6>
       <Button onClick={onViewExpensesClick} variant="outlined">
         View Expenses
       </Button>

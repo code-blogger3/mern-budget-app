@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import AddBudgetModal from "./AddBudgetModal";
-import Button from "@mui/joy/Button";
 import { useGetUserID } from "../hooks/useGetUserID";
 import AddExpenseModal from "./AddExpenseModal";
 import ViewExpensesModal from "./ViewExpensesModal";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { BudgetState, ExpenseState } from "../states/atoms/BudgetExpense";
 import { getBudgets } from "../services/budgetApis";
-import UncategorizedBudget from "./UncategorizedBudget";
 import BudgetCardList from "./BudgetCardList";
 import { getExpenses } from "../services/expenseApis";
+import Buttons from "./Buttons";
 
 function Home() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -22,9 +21,9 @@ function Home() {
   const setExpenses = useSetRecoilState(ExpenseState);
   const userID = useGetUserID();
 
-  function openAddExpenseModal(budgetID_or_userID) {
+  function openAddExpenseModal(budgetID) {
     setShowAddExpenseModal(true);
-    setAddExpenseModalBudgetId(budgetID_or_userID);
+    setAddExpenseModalBudgetId(budgetID);
   }
   function openViewExpensesModal(budgetID) {
     setShowViewExpenseModal(true);
@@ -47,28 +46,16 @@ function Home() {
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color="neutral"
-        onClick={() => setShowAddBudgetModal(true)}
-      >
-        Add Budget
-      </Button>
-      <Button
-        variant="outlined"
-        color="neutral"
-        onClick={() => openAddExpenseModal(userID)}
-      >
-        Add Expense
-      </Button>
+      <Buttons
+        setShowAddBudgetModal={setShowAddBudgetModal}
+        openAddExpenseModal={openAddExpenseModal}
+        userID={userID}
+      />
 
       <BudgetCardList
         openAddExpenseModal={openAddExpenseModal}
         openViewExpensesModal={openViewExpensesModal}
         userID={userID}
-      />
-      <UncategorizedBudget
-        onViewExpensesClick={() => openViewExpensesModal(userID)}
       />
 
       <AddBudgetModal
