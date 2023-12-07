@@ -12,9 +12,10 @@ import { CssVarsProvider } from "@mui/joy";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RecoilRoot>
-      <CssVarsProvider defaultMode="dark">
+      <CssVarsProvider>
         <App />
       </CssVarsProvider>
     </RecoilRoot>
   </React.StrictMode>
 );
+// defaultMode = "dark";

@@ -1,14 +1,17 @@
 import { Button, Grid } from "@mui/joy";
 import { useCookies } from "react-cookie";
 import "../styles/navbar.css";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [cookies, setCookies] = useCookies(["access_token"]);
+  const navigate = useNavigate();
   const logout = () => {
     setCookies("access_token", "");
     window.localStorage.clear();
-    // navigate("/auth");
+    navigate("/login");
   };
+  console.log(cookies);
   return (
     <>
       <Grid
@@ -16,12 +19,30 @@ function Navbar() {
         direction="row"
         justifyContent="flex-end"
         alignItems="flex-start"
+        sx={{}}
       >
-        <Grid>
-          <Button color="neutral" onClick={logout} variant="plain">
-            Logout
-          </Button>
-        </Grid>
+        {cookies.access_token != "" ? (
+          <Grid>
+            <Button color="neutral" onClick={logout} variant="plain">
+              <span className="link">Logout</span>
+            </Button>
+          </Grid>
+        ) : (
+          <>
+            <Grid>
+              <Button color="neutral" variant="plain">
+                <Link to="/register" className="link">
+                  Sign Up
+                </Link>
+              </Button>
+            </Grid>
+            <Button color="neutral" variant="plain">
+              <Link to="/login" className="link">
+                Login
+              </Link>
+            </Button>
+          </>
+        )}
       </Grid>
     </>
   );

@@ -3,7 +3,7 @@ import AddBudgetModal from "./AddBudgetModal";
 import { useGetUserID } from "../hooks/useGetUserID";
 import AddExpenseModal from "./AddExpenseModal";
 import ViewExpensesModal from "./ViewExpensesModal";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { BudgetState, ExpenseState } from "../states/atoms/BudgetExpense";
 import { getBudgets } from "../services/budgetApis";
 import BudgetCardList from "./BudgetCardList";
@@ -78,13 +78,3 @@ function Home() {
 }
 
 export default Home;
-
-// async function getExpensesAmount(budgetID, userID) {
-//   const result = await getBudgetExpenses(budgetID, userID);
-//   const amount = result.data.expenses.reduce(
-//     (total, expense) => total + expense.amount,
-//     0
-//   );
-//   const percentage = (amount / max) * 100;
-//   return percentage;
-// }

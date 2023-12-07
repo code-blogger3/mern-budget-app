@@ -15,7 +15,9 @@ function Register() {
       await registerUser(username, password);
       alert("Registration Completed! Now login.");
       navigate("/login");
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>

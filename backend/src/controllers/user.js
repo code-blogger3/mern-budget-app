@@ -35,7 +35,7 @@ const loginUser = asyncHandler(async (req, res) => {
         .json({ message: "Username or password is incorrect" });
     }
 
-    const token = jwt.sign({ id: user._id }, "secret");
+    const token = jwt.sign({ id: user._id }, "superSafe");
     res.json({ token, userID: user._id });
   } catch (error) {
     // Handle other errors here
