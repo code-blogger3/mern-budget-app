@@ -36,23 +36,35 @@ function BudgetCards({
   // console.log(amount);
   return (
     <Card color="primary" orientation="vertical" size="sm">
-      <div>
-        {name}
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h6>{name}</h6>
         <span>
           {currencyFormatter.format(totalAmount)}/
           {currencyFormatter.format(max)}
         </span>
       </div>
-      <div>{max}</div>
+      <div>{currencyFormatter.format(max)}</div>
       <LinearProgress determinate value={progressBarLevel} />
       <div>
-        <Button onClick={onAddExpenseClick} variant="solid">
+        <Button onClick={onAddExpenseClick} size="sm" variant="solid">
           Add Expenses
         </Button>
-        <Button onClick={onViewExpensesClick} variant="outlined">
+        <Button
+          onClick={onViewExpensesClick}
+          size="sm"
+          variant="plain"
+          sx={{ margin: "0 9px" }}
+        >
           View Expenses
         </Button>
-        <button onClick={onDeleteBudget}>delete</button>
+        <Button
+          onClick={onDeleteBudget}
+          variant="plain"
+          size="sm"
+          color="danger"
+        >
+          delete
+        </Button>
       </div>
     </Card>
   );

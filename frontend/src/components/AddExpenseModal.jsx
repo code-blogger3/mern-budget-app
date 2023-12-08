@@ -1,5 +1,6 @@
 import { useGetUserID } from "../hooks/useGetUserID";
-import { useNavigate } from "react-router-dom";
+import Input from "@mui/joy/Input";
+import Button from "@mui/joy/Button";
 // import { useCookies } from "react-cookie";
 import { Form } from "react-bootstrap";
 import { useRef, useState } from "react";
@@ -86,10 +87,11 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
               Add Expense
             </Typography>
             <div>
-              <button onClick={() => closeModal(false)}>Cancel</button>
-
               <label htmlFor="name">Description</label>
-              <input
+              <Input
+                placeholder="Type in here…"
+                variant="plain"
+                sx={{ margin: "13px" }}
                 type="text"
                 id="description"
                 name="description"
@@ -97,7 +99,10 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
                 onChange={handleChange}
               />
               <label htmlFor="max">Amount</label>
-              <input
+              <Input
+                variant="outlined"
+                sx={{ margin: "13px" }}
+                size="lg"
                 type="number"
                 name="amount"
                 id="amount"
@@ -114,7 +119,16 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
                   ))}
                 </Form.Select>
               </div>
-              <button onClick={triggerFunctions}>add</button>
+              <Button onClick={triggerFunctions} size="sm" variant="solid">
+                add
+              </Button>
+              <Button
+                size="sm"
+                variant="plain"
+                onClick={() => closeModal(false)}
+              >
+                Cancel
+              </Button>
             </div>
           </Sheet>
         </Modal>

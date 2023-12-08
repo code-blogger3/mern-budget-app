@@ -1,5 +1,4 @@
 import { useGetUserID } from "../hooks/useGetUserID";
-import { useNavigate } from "react-router-dom";
 // import { useCookies } from "react-cookie";
 import { useState } from "react";
 import Modal from "@mui/joy/Modal";
@@ -9,11 +8,11 @@ import Sheet from "@mui/joy/Sheet";
 import { postBudget } from "../services/budgetApis";
 import { useSetRecoilState } from "recoil";
 import { BudgetState } from "../states/atoms/BudgetExpense";
-// import "../styles/addBudgetModal.css";
+import Input from "@mui/joy/Input";
+import Button from "@mui/joy/Button";
 
 function AddBudgetModal({ closeModal, open }) {
   const userID = useGetUserID();
-  const navigate = useNavigate();
   // const [cookies, _] = useCookies(["access_token"]);
   const [budget, setBudget] = useState({
     name: "",
@@ -77,13 +76,15 @@ function AddBudgetModal({ closeModal, open }) {
               fontWeight="lg"
               mb={1}
             >
-              This is the modal title
+              Add Budget
             </Typography>
             <div>
-              <button onClick={() => closeModal(false)}>Cancel</button>
-
-              <label htmlFor="name">Name</label>
-              <input
+              <label htmlFor="name">Name of budget</label>
+              <Input
+                placeholder="Type in here…"
+                variant="plain"
+                size="lg"
+                sx={{ margin: "13px" }}
                 type="text"
                 id="name"
                 name="name"
@@ -91,14 +92,25 @@ function AddBudgetModal({ closeModal, open }) {
                 onChange={handleChange}
               />
               <label htmlFor="max">Maximum amount</label>
-              <input
+              <Input
+                variant="outlined"
+                sx={{ margin: "13px" }}
                 type="number"
                 name="max"
                 id="max"
                 value={budget.max}
                 onChange={handleChange}
               />
-              <button onClick={triggerFunctions}>add</button>
+              <Button onClick={triggerFunctions} size="sm" variant="solid">
+                Add
+              </Button>
+              <Button
+                onClick={() => closeModal(false)}
+                size="sm"
+                variant="plain"
+              >
+                Cancel
+              </Button>
             </div>
           </Sheet>
         </Modal>
