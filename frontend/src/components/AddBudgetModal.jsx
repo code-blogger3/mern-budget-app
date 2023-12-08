@@ -23,7 +23,7 @@ function AddBudgetModal({ closeModal, open }) {
   const PostBudget = async () => {
     try {
       const result = await postBudget(budget, userID);
-      setBudgets(result.data.budgets);
+      setBudgets(result.data.data.budgets);
     } catch (error) {
       console.log(error);
     }

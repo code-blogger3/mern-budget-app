@@ -1,16 +1,17 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import mongoose from "mongoose";
 // import { verifyToken } from "./user.js";
-import { BudgetModel } from "../models/Budget.js";
 import { ExpenseModel } from "../models/Expense.js";
 import { UserModel } from "../models/User.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
 
 const sendUserExpenses = asyncHandler(async (req, res) => {
   const { userID } = req.params;
   try {
     await sendExpense(userID, res);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json(new ApiError(500, "Failed to send expenses", err));
   }
 });
 
@@ -20,11 +21,13 @@ async function sendExpense(userID, res) {
       .populate("expenses")
       .select("-password -__v -budgets -username -_id");
 
-    // Rename property before sending response
-
-    res.status(200).json(user);
+    res
+      .status(200)
+      .json(new ApiResponse(200, "Expenses are send successfully", user));
   } catch (err) {
-    res.status(500).json(err);
+    res
+      .status(500)
+      .json(new ApiError(500, "Budgets are not being able to send", err));
   }
 }
 
@@ -41,14 +44,15 @@ const deleteUserExpense = asyncHandler(async (req, res) => {
     console.log("Expense removed from user successfully");
     if (result.deletedCount > 0) {
       // Document was deleted successfully
-      res.status(200).json({ message: "Expense deleted successfully." });
+      res
+        .status(200)
+        .json(new ApiResponse(200, "Expense deleted successfully"));
     } else {
       // No matching document found
-      res.status(404).json({ message: "Expense not found." });
+      res.status(404).json(new ApiError(404, "Expense not found"));
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json(new ApiError(404, "Internal Server Error", err));
   }
 });
 
@@ -59,9 +63,11 @@ const postUserExpense = asyncHandler(async (request, response) => {
     const result = await handleUserExpense(userID, expenseDetails);
     response
       .status(200)
-      .json({ message: "Expense saved successfully", data: result });
+      .json(new ApiResponse(200, "Expense saved successfully", result));
   } catch (error) {
-    response.status(500).json({ error: "Internal server error" });
+    response
+      .status(500)
+      .json(new ApiError(500, "Could not able to post budget", err));
   }
 });
 

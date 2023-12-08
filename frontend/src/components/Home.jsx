@@ -32,11 +32,12 @@ function Home() {
 
   const GetBudgets = async () => {
     const result = await getBudgets(userID);
-    setBudgets(result.data.budgets);
+    setBudgets(result.data.data.budgets);
+    console.log(result);
   };
   const GetExpenses = async () => {
     const result = await getExpenses(userID);
-    setExpenses(result.data.expenses);
+    setExpenses(result.data.data.expenses);
   };
 
   useEffect(() => {

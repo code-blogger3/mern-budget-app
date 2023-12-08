@@ -11,8 +11,8 @@ function Login() {
     event.preventDefault();
     try {
       const result = await loginUser(username, password);
-      setCookies("access_token", result.data.token);
-      window.localStorage.setItem("userID", result.data.userID);
+      setCookies("access_token", result.data.data.token);
+      window.localStorage.setItem("userID", result.data.data.userID);
       navigate("/");
     } catch (error) {
       console.error(error);
