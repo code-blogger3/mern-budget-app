@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/userApis";
+import { Button, Input } from "@mui/joy";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -22,11 +23,14 @@ function Register() {
   return (
     <>
       <div className="auth-container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="form">
           <h2>Register</h2>
           <div className="form-group">
             <label htmlFor="username">Username:</label>
-            <input
+            <Input
+              variant="outlined"
+              sx={{ margin: "13px" }}
+              size="sm"
               type="text"
               id="username"
               value={username}
@@ -35,14 +39,19 @@ function Register() {
           </div>
           <div className="form-group">
             <label htmlFor="password">Password:</label>
-            <input
+            <Input
+              variant="outlined"
+              sx={{ margin: "13px" }}
+              size="sm"
               type="password"
               id="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
-          <button type="submit">Register</button>
+          <Button size="sm" variant="solid" type="submit">
+            Register
+          </Button>
         </form>
       </div>
     </>

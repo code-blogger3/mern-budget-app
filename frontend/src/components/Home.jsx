@@ -3,12 +3,14 @@ import AddBudgetModal from "./AddBudgetModal";
 import { useGetUserID } from "../hooks/useGetUserID";
 import AddExpenseModal from "./AddExpenseModal";
 import ViewExpensesModal from "./ViewExpensesModal";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { BudgetState, ExpenseState } from "../states/atoms/BudgetExpense";
 import { getBudgets } from "../services/budgetApis";
 import BudgetCardList from "./BudgetCardList";
 import { getExpenses } from "../services/expenseApis";
 import Buttons from "./Buttons";
+import { isUserLogin } from "../states/atoms/userLogin";
+import { redirect, useNavigate } from "react-router-dom";
 
 function Home() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
@@ -17,6 +19,7 @@ function Home() {
   const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState("");
   const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] =
     useState("");
+  const navigate = useNavigate();
   const setBudgets = useSetRecoilState(BudgetState);
   const setExpenses = useSetRecoilState(ExpenseState);
   const userID = useGetUserID();

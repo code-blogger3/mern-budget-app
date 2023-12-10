@@ -2,14 +2,18 @@ import { Button, Grid } from "@mui/joy";
 import { useCookies } from "react-cookie";
 import "../styles/navbar.css";
 import { Link, useNavigate } from "react-router-dom";
+import { isUserLogin } from "../states/atoms/userLogin";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 function Navbar() {
   const [cookies, setCookies] = useCookies(["access_token"]);
+  const [isLogin, setIsLogin] = useRecoilState(isUserLogin);
   const navigate = useNavigate();
   const logout = () => {
     setCookies("access_token", "");
     window.localStorage.clear();
     navigate("/login");
+    setIsLogin(false);
   };
   console.log(cookies);
   return (
@@ -21,7 +25,7 @@ function Navbar() {
         alignItems="flex-start"
         sx={{}}
       >
-        {cookies.access_token != "" ? (
+        {isLogin ? (
           <Grid>
             <Button color="neutral" onClick={logout} variant="plain">
               <span className="link">Logout</span>

@@ -38,12 +38,14 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, "superSafe");
-    res.json(new ApiResponse(200, "login detail is send"), {
-      token,
-      userID: user._id,
-    });
+    res.json(
+      new ApiResponse(200, "login detail is send", {
+        token,
+        userID: user._id,
+      })
+    );
   } catch (error) {
-    res.status(500).json(new ApiError(500, "Internal Server Error", error));
+    res.status(500).json(new ApiError(500, "user not able to login", error));
   }
 });
 
