@@ -1,7 +1,7 @@
 import axios from "axios";
 
 async function postExpense(expenseDetails, userID) {
-  const result = await axios.post("http://localhost:8001/expense", {
+  const result = await axios.post("/api/expense", {
     userID,
     ...expenseDetails,
   });
@@ -9,11 +9,11 @@ async function postExpense(expenseDetails, userID) {
 }
 
 async function deleteExpense(expenseID, userID) {
-  await axios.delete(`http://localhost:8001/expense/${expenseID}/${userID}`);
+  await axios.delete(`/api/expense/${expenseID}/${userID}`);
 }
 
 async function getExpenses(userID) {
-  const result = await axios.get(`http://localhost:8001/expense/${userID}`);
+  const result = await axios.get(`/api/expense/${userID}`);
   return result;
 }
 

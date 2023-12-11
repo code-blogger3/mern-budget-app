@@ -18,7 +18,8 @@ function Login() {
       setCookies("access_token", result.data.data.token);
       window.localStorage.setItem("userID", result.data.data.userID);
       navigate("/");
-      setIsUserLogin(true);
+      // console.log(result);
+      setIsLogin(true);
     } catch (error) {
       console.error(error);
     }

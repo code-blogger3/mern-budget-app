@@ -4,16 +4,22 @@ import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Stack from "@mui/joy/Stack";
-import { useRecoilState } from "recoil";
-import { ExpenseState } from "../states/atoms/BudgetExpense";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { BudgetState, ExpenseState } from "../states/atoms/BudgetExpense";
 import { deleteExpense } from "../services/expenseApis";
+import { Button } from "@mui/joy";
 
 function ViewExpensesModal({ budgetID, closeModal, open, userID }) {
   const [expenses, setExpenses] = useRecoilState(ExpenseState);
+  const budgets = useRecoilValue(BudgetState);
   const [budgetName, setBudgetName] = useState("");
   const filteredExpenses = expenses.filter(
     (expense) => expense.budgetID == budgetID
   );
+  useEffect(() => {
+    const filteredBudget = budgets.filter((budget) => budget._id == budgetID);
+    setBudgetName(filteredBudget[0]?.name);
+  }, []);
 
   const DeleteExpense = async (expenseID) => {
     try {
@@ -67,18 +73,25 @@ function ViewExpensesModal({ budgetID, closeModal, open, userID }) {
             {filteredExpenses.map((expense) => (
               <Stack
                 direction="row"
-                justifyContent="center"
+                justifyContent="space-between"
                 alignItems="flex-start"
-                spacing={2}
+                spacing={3}
                 key={expense._id}
               >
-                <span>{expense.description}</span>
-                <button onClick={() => DeleteExpense(expense._id)}>X</button>
+                <p>{expense.description}</p>
+                <Button
+                  color="danger"
+                  size="sm"
+                  onClick={() => DeleteExpense(expense._id)}
+                >
+                  X
+                </Button>
               </Stack>
             ))}
           </Stack>
-
-          <button onClick={() => closeModal(false)}>Cancel</button>
+          <Button size="sm" variant="plain" onClick={() => closeModal(false)}>
+            Cancel
+          </Button>
         </Sheet>
       </Modal>
     </section>
