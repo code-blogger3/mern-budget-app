@@ -1,5 +1,4 @@
 import { useGetUserID } from "../hooks/useGetUserID";
-// import { useCookies } from "react-cookie";
 import { useState } from "react";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
@@ -10,10 +9,11 @@ import { useSetRecoilState } from "recoil";
 import { BudgetState } from "../states/atoms/BudgetExpense";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
+import { useCookies } from "react-cookie";
 
 function AddBudgetModal({ closeModal, open }) {
   const userID = useGetUserID();
-  // const [cookies, _] = useCookies(["access_token"]);
+  const [cookies, _] = useCookies(["access_token"]);
   const [budget, setBudget] = useState({
     name: "",
     max: 0,
@@ -21,7 +21,7 @@ function AddBudgetModal({ closeModal, open }) {
   const setBudgets = useSetRecoilState(BudgetState);
   const PostBudget = async () => {
     try {
-      const result = await postBudget(budget, userID);
+      const result = await postBudget(budget, userID, cookies);
       setBudgets(result.data.data.budgets);
     } catch (error) {
       console.log(error);

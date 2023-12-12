@@ -9,13 +9,13 @@ async function deleteBudget(budgetID, userID) {
   await axios.delete(`/api/${budgetID}/${userID}`);
 }
 
-async function postBudget(budget, userID) {
+async function postBudget(budget, userID, cookies) {
   const result = await axios.post(
     "/api/budget",
-    { ...budget, userID }
-    // {
-    //   headers: { authorization: cookies.access_token },
-    // }
+    { ...budget, userID },
+    {
+      headers: { authorization: cookies.access_token },
+    }
   );
   return result;
 }
