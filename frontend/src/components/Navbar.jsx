@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import "../styles/navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { isUserLogin } from "../states/atoms/userLogin";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 function Navbar() {
   const [cookies, setCookies] = useCookies(["access_token"]);

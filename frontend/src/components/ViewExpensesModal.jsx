@@ -15,7 +15,8 @@ function ViewExpensesModal({ budgetID, closeModal, open, userID }) {
   const [budgetName, setBudgetName] = useState("");
   const filteredExpenses = expenses.filter(
     (expense) => expense.budgetID == budgetID
-  );
+  ); // getting expenses from recoil state then filtering with budgetID which includes useID to display uncategorized expense
+
   useEffect(() => {
     const filteredBudget = budgets.filter((budget) => budget._id == budgetID);
     setBudgetName(filteredBudget[0]?.name);

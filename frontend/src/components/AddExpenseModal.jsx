@@ -1,14 +1,13 @@
 import { useGetUserID } from "../hooks/useGetUserID";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-// import { useCookies } from "react-cookie";
 import { Form } from "react-bootstrap";
 import { useRef, useState } from "react";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { BudgetState, ExpenseState } from "../states/atoms/BudgetExpense";
 import { postExpense } from "../services/expenseApis";
 
@@ -36,7 +35,6 @@ function AddExpenseModal({ open, closeModal, defaultBudgetId }) {
       const result = await postExpense(expense, userID);
       console.log(result.data.data);
       setExpenses((prev) => [...prev, result.data.data]);
-      //   auth
     } catch (error) {
       console.error(error);
     }
